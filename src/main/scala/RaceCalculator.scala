@@ -15,6 +15,9 @@ class RaceCalculator(teamNumber: Int, trackLength: Double) {
 
   var results = ListBuffer.empty[RaceResult]
 
+  /**
+    * init racing team with number of teams
+    */
   private def initRacingTeam(): ListBuffer[Team] = {
     val teams = ListBuffer.empty[Team]
     for(i <- 1 to teamNumber) {
@@ -34,6 +37,9 @@ class RaceCalculator(teamNumber: Int, trackLength: Double) {
     }
   }
 
+  /**
+    * Update car position and speed until all car finished track
+    */
   def updatePosition(): Unit = {
     for(team <- teams) {
       if(team.getTimeToMaxSpeed() > reAssessmentTime) {
@@ -49,6 +55,9 @@ class RaceCalculator(teamNumber: Int, trackLength: Double) {
 
   }
 
+  /**
+    * check if there any car within 10 meters, speed reduces to handling factor
+    */
   def checkNearbyCarAndAdjustSpeed(): Unit = {
     if(teams.size < 2) return
     else if(teams.size == 2 && isCarNearby(teams(0), teams(1))) {
@@ -89,6 +98,9 @@ class RaceCalculator(teamNumber: Int, trackLength: Double) {
     abs(team1.currentPosition - team2.currentPosition) <= handlingDistance
   }
 
+  /**
+    * check last position car and use nitro to boost speed up
+    */
   def checkLastPositionAndUseNitro(): Unit = {
     if(teams.size < 1) return
     val sortedList: Array[Team] = teams.toArray
@@ -107,6 +119,9 @@ class RaceCalculator(teamNumber: Int, trackLength: Double) {
     }
   }
 
+  /**
+    * check if any car have position more than track length and move it to result list
+    */
   def checkFinishingCar(): Unit = {
     val finishedTeams = ListBuffer.empty[Team]
     for(team <- teams) {
